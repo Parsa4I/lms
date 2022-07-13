@@ -1,0 +1,20 @@
+{% extends 'lms/layout.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <h2>Find Public Courses</h2>
+    <form id="search-form" onsubmit="search(); return false;">
+        <div class="input-group mb-3">
+            <input type="text" id="search-bar" class="form-control" placeholder="Course Name" aria-label="Course Name" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-dark" type="button" id="search-btn">Search</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div id="course-cards"></div>
+</div>
+
+<script src="{% static 'lms/find-course.js' %}"></script>
+{% endblock %}

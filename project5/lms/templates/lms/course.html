@@ -1,0 +1,45 @@
+{% extends 'lms/layout.html' %}
+{% load static %}
+
+{% block body %}
+<h2><span style="color: gray;">Course</span> <span id="course-id" style="color: gray;">{{course_id}}</span> {{course_name}}</h2>
+<h4><span style="color: gray;">Teacher</span> {{teacher}}</h4>
+
+{% if user.is_authenticated %}
+    {% if user.is_teacher %}
+        {% if user.username == teacher %}
+            <a class="btn btn-dark" href="/course/{{course_id}}/add-homework" role="button">Add Homework</a>
+            <div class="container">
+                <hr>
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12">
+                        <h2>Homework</h2>
+                        <div id="homework-cards"></div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <h4>You are not teacher of this class</h4>
+        {% endif %}
+    {% else %}
+        {% if user.username in students %}
+            <div class="container">
+                <hr>
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12">
+                        <h2>Homework</h2>
+                        <div id="homework-cards"></div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <h4>You have not signed up for this course.</h4>
+            <a href="/new-course/{{course_id}}">click here to sign up</a>
+        {% endif %}
+    {% endif %}
+{% else %}
+    <p>You cannot have access to a course without <a href="/signup">signing up</a>.</p>
+{% endif %}
+
+<script src="{% static 'lms/course.js' %}"></script>
+{% endblock %}

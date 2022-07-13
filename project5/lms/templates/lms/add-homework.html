@@ -1,0 +1,30 @@
+{% extends 'lms/layout.html' %}
+{% load static %}
+
+{% block body %}
+<h1>Add Homework for {{course_name}}</h1>
+<form action="/course/{{course_id}}/add-homework" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+        <p>Title</p>
+        {{form.title}}
+    </div>
+    <div class="form-group">
+        <p>Description</p>
+        {{form.description}}
+    </div>
+    <div class="form-group">
+        <p>Due Time</p>
+        {{form.due_date}}
+    </div>
+    <div class="form-group">
+        <p>Due Time</p>
+        {{form.due_time}}
+    </div>
+    <div class="form-group">
+        <p>Description File</p>
+        {{form.desc_file}}
+    </div>
+    <input class="btn btn-dark" type="submit" value="Add">
+</form>
+{% endblock %}

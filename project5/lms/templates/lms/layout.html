@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'lms/style.css' %}">
+    <link type="image/png" sizes="16x16" rel="icon" href="{% static 'lms/img/lmsfavico.png' %}">
+    <script src="https://kit.fontawesome.com/28c6380c8b.js" crossorigin="anonymous"></script>
+    {% block head %}
+    {% endblock %}
+    <title>lms</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'index' %}">LMS</a>
+        <div>
+            <ul class="navbar-nav mr-auto">
+                {% if user.is_teacher and user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/user/{{user.username}}" style="text-transform: capitalize">
+                            <i class="fa-solid fa-chalkboard-user"></i> {{user.username}} (Teacher)
+                        </a>
+                    </li>
+                {% elif user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="/user/{{user.username}}" style="text-transform: capitalize">
+                        <i class="fa-solid fa-graduation-cap"></i> {{user.username}} (Student)
+                    </a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link" href="/new-course"><i class="fa-solid fa-screen-users"></i> New Course</a></li>
+                {% if not user.is_teacher %}
+                    <li class="nav-item"><a class="nav-link" href="/find-public-courses"><i class="fa-solid fa-magnifying-glass"></i> Find Public Courses</a></li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link" href="/"></a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}"><i class="fa-solid fa-user-plus"></i> Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fa-solid fa-user"></i> Login</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        {% block body %}
+        {% endblock %}
+        <div id="user" style="display: none;">{{user}}</div>
+    </div>
+</body>
+</html>

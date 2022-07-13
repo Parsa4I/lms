@@ -1,0 +1,10 @@
+{% extends 'lms/layout.html' %}
+{% load static %}
+
+{% block body %}
+<div style="display: none;" id="user">{{username}}</div>
+<h2>{{username}} <span class="text-muted">({{role}})</span></h2>
+<div id="course-cards"></div>
+
+<script src="{% static 'lms/user.js' %}"></script>
+{% endblock %}

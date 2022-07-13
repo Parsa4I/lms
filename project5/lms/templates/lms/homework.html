@@ -1,0 +1,91 @@
+{% extends 'lms/layout.html' %}
+{% load static %}
+
+{% block body %}
+<p style="display: none;" id="pk">{{id}}</p>
+<h2>{{title}}</h2>
+<p class="text-muted">Due: {{duedate}} | {{duetime}}</p>
+<hr>
+<p>{{description}}</p>
+{% if fname %}
+    <p>Attached File: <a href="{% url 'download' fname %}" download>download</a></p>
+{% endif %}
+<hr>
+{% if not user.is_teacher %}
+    <h4>Submit Homework</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-xs-12">
+                {% if done_hw %}
+                    <p style="color:green;">You have already done this homework.<br>
+                    <span class="text-muted">Uploaded on {{upload_date}}, at {{upload_time}}</span>
+                    </p>
+                    <p><span class="text-muted">Score</span> 
+                        {% if score is not None%}
+                            {{score}}
+                        {% else %}
+                            not defined
+                        {% endif %}
+                    </p>
+                {% elif not is_past_due %}
+                    <form action="/submit-homework/{{id}}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{form}}
+                        <input class="btn btn-dark" type="submit" value="Submit">
+                    </form>
+                {% else %}
+                    <p>You haven't submited this homework in due time.</p>
+                {% endif %}
+            </div>
+            <div class="col-lg-6 col-xs-12">
+                <h2>Scored Homework</h2>
+                <div id="scored-homework">
+                    <table style="width: 100%;">
+                        <tr>
+                            <th>Rank</th>
+                            <th>Name</th>
+                            <th>Score</th>
+                        </tr>
+                        {% for i in userhomeworks %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td><a href="/user/{{i.student.username}}" class="a-table">{{i.student}}</a></td>
+                                <td><a href="{% url 'give_score' i.pk %}" class="a-table">{{i.score}}</a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-6 col-xs-12">
+            <h2>Submited Homework</h2>
+            <div id="submited-homework"></div>
+        </div>
+        <div class="col-lg-6 col-xs-12">
+            <h2>Scored Homework</h2>
+            <div id="scored-homework">
+                <table style="width: 100%;">
+                    <tr>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th>Score</th>
+                    </tr>
+                    {% for i in userhomeworks %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td><a href="/user/{{i.student.pk}}" class="a-table">{{i.student}}</a></td>
+                            <td><a href="{% url 'give_score' i.pk %}" class="a-table">{{i.score}}</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<script src="{% static 'lms/homework.js' %}"></script>
+{% endblock %}

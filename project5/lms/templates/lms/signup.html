@@ -1,0 +1,34 @@
+{% extends 'lms/layout.html' %}
+
+{% block body %}
+<h1>Sign Up</h1>
+<p style="color: red">{{message}}</p>
+<form action="{% url 'signup' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <input class="form-control" autofocus type="text" name="username" placeholder="Username" required>
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="email" name="email" placeholder="Email Address" required>
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="password" name="password" placeholder="Password" required>
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password" required>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="role" id="student" value="student" checked>
+        <label class="form-check-label" for="student">
+            I'm a student
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="role" id="teacher" value="teacher">
+        <label class="form-check-label" for="teacher">
+            I'm a teacher
+        </label>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Register">
+</form>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'lms/layout.html' %}
+{% load static %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        {% if not user.is_teacher %}
+            <div class="col-lg-6 col-xs-12">
+                <h2>Your Courses</h2>
+                <div id="course-cards"></div>
+            </div>
+            <div class="col-lg-6 col-xs-12">
+                <h2>Your Homework</h2>
+                <div id="homework-cards"></div>
+            </div>
+        {% else %}
+            <div class="col-12">
+                <h2>Your Courses</h2>
+                <div id="course-cards"></div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<script src="{% static 'lms/index.js' %}"></script>
+{% endblock %}
